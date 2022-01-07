@@ -18,7 +18,6 @@ const workoutSchema = new Schema({
     trainer:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",
-        default:"61d82bca2713260c72c9ecc7"
       
     },
     

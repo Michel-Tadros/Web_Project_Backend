@@ -15,6 +15,10 @@ var User = new Schema({
         type: Boolean,
         default: false
     },
+    age:{
+        type:Date,
+        max:Date.now
+    },
     trainer:   {
         type: Boolean,
         default: false

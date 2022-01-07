@@ -23,27 +23,6 @@ const trainerSchema = new Schema({
     },
 });
 
-/**const workoutSchema = new Schema({
-    name:{
-        type:String,
-        required:true,
-    },
-    type:{
-        type:String,
-        required:true,
-    },
-    description:{
-        type:String,
-        required:true,
-    },
-    trainer:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"user",
-    },
-    
-});
 
-var workouts=mongoose.model('workouts',workoutSchema,'Workouts');
-module.exports=workouts;*/
 var Trainers=mongoose.model('Trainers',trainerSchema,'Trainers');
 module.exports=Trainers;

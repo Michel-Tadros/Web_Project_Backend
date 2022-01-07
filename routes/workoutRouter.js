@@ -20,7 +20,7 @@ workoutRouter.route('/')
     },(err)=>next(err))
     .catch((err)=>next(err));
 })
-.post(authenticate.verifyUser, (req, res, next) => {
+.post(authenticate.verifyUser,authenticate.verifyTrainer, (req, res, next) => {
     workouts.create(req.body)
     .then((workout)=>{
         workout.trainer=req.user._id;
@@ -31,11 +31,11 @@ workoutRouter.route('/')
     },(err)=>next(err)).catch((err)=>next(err));
     
 })
-.put(authenticate.verifyUser, (req, res, next) => {
+.put(authenticate.verifyUser,authenticate.verifyTrainer, (req, res, next) => {
     res.statusCode = 403;
     res.end('PUT operation not supported on /workouts');
 })
-.delete(authenticate.verifyUser,(req, res, next) => {
+.delete(authenticate.verifyUser,authenticate.verifyAdmin,(req, res, next) => {
     workouts.remove({})
     .then((resp)=>{
         res.statusCode=200;
@@ -57,11 +57,11 @@ workoutRouter.route('/:workoutId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.post(authenticate.verifyUser, (req, res, next) => {
+.post(authenticate.verifyUser,authenticate.verifyTrainer,(req, res, next) => {
     res.statusCode = 403;
     res.end('POST operation not supported on /workoutsId/'+ req.params.workoutId);
 })
-.put(authenticate.verifyUser, (req, res, next) => {
+.put(authenticate.verifyUser,authenticate.verifyTrainer, (req, res, next) => {
     workouts.findByIdAndUpdate(req.params.workoutId, {
         $set: req.body
     }, { new: true })
@@ -72,7 +72,7 @@ workoutRouter.route('/:workoutId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.delete(authenticate.verifyUser, (req, res, next) => {
+.delete(authenticate.verifyUser,authenticate.verifyAdmin, (req, res, next) => {
     workouts.findByIdAndRemove(req.params.workoutId)
     .then((resp) => {
         res.statusCode = 200;
@@ -100,7 +100,7 @@ workoutRouter.route('/:workoutId/trainer')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.post(authenticate.verifyUser, (req, res, next) => {
+.post(authenticate.verifyUser,authenticate.verifyTrainer, (req, res, next) => {
     workouts.findById(req.params.workoutId)
     .then((workout) => {
         if (workout != null) {

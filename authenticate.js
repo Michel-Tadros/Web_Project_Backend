@@ -36,3 +36,34 @@ exports.jwtPassport = passport.use(new JwtStrategy(opts,
     }));
 
 exports.verifyUser = passport.authenticate('jwt', {session: false});
+exports.verifyAdmin = (req, res, next) => {
+    if (req.user.admin){
+        next();
+    }
+    else{
+        const error = new Error("You're not authorized to do this operation");
+        error.statusCode = 403; //forbidden
+        next(error);
+    }
+}
+exports.verifyTrainer = (req, res, next) => {
+    if (req.user.trainer){
+        next();
+    }
+    else{
+        const error = new Error("You're not authorized to do this operation");
+        error.statusCode = 403; //forbidden
+        next(error);
+    }
+}
+
+exports.verifyDietecian = (req, res, next) => {
+    if (req.user.dietician){
+        next();
+    }
+    else{
+        const error = new Error("You're not authorized to do this operation");
+        error.statusCode = 403; //forbidden
+        next(error);
+    }
+}
