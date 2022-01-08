@@ -28,6 +28,7 @@ trainerRouter.route('/')
     Trainers.create(req.body)
     .then((trainer)=>{
         trainer.User_id=req.user._id;
+        req.user.trainer=true;
         trainer.save();
         console.log("Trainer created",trainer);
         res.setHeader("Content-type","application/json");

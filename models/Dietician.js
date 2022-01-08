@@ -7,7 +7,7 @@ const dieticianSchema = new Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",
     },
-    name:{
+    firstname:{
         type:String,
         required:true,
     },
@@ -19,6 +19,11 @@ const dieticianSchema = new Schema({
         type:Number,
         required:true,
         unique:true
+    },
+    email:{
+        type:String,
+        default:"No email was provided",
+        unique:true,
     },
     price:{
         type:Currency,

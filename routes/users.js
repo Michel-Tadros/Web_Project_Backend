@@ -99,7 +99,7 @@ router.route('/:userId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.delete((req, res, next) => {
+.delete(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyAdmin,(req, res, next) => {
     User.findByIdAndRemove(req.params.userId)
     .then((resp) => {
         res.statusCode = 200;
@@ -108,6 +108,8 @@ router.route('/:userId')
     }, (err) => next(err))
     .catch((err) => next(err));
 });
+
+
 
 
 module.exports = router;

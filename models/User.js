@@ -11,14 +11,25 @@ var User = new Schema({
         type:String,
         default:' '
     },
-    admin:   {
-        type: Boolean,
-        default: false
+    phonenumber:{
+        type:Number,
+
+    },
+    email:{
+        type:String,
+        default:"No email was provided",
+        unique:true,
     },
     date_of_birth:{
         type:Date,
         max:Date.now
     },
+
+    admin:   {
+        type: Boolean,
+        default: false
+    },
+    
     trainer:   {
         type: Boolean,
         default: false
@@ -27,10 +38,7 @@ var User = new Schema({
         type: Boolean,
         default: false
     },
-    phonenumber:{
-        type:Number,
-
-    }
+    
 });
 
 User.plugin(passportLocalMongoose);

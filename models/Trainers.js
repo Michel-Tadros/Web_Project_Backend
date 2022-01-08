@@ -20,6 +20,11 @@ const trainerSchema = new Schema({
         required:true,
         unique:true
     },
+    email:{
+        type:String,
+        default:"No email was provided",
+        unique:true,
+    },
     price:{
         type:Currency,
         required:true,
