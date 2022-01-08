@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const diets=require('../models/diet');
-
+const cors=require('./cors');
 
 const dietRouter = express.Router();
 
@@ -10,7 +10,9 @@ dietRouter.use(bodyParser.json());
 var authenticate = require('../authenticate');
 
 dietRouter.route('/')
-.get((req,res,next) => {
+.options(cors.corsWithOptions,(req,res)=>{res.sendStatus(200);})
+
+.get(cors.cors,(req,res,next) => {
     diets.find({})
     .populate('dietician','_id')
     .then((diets)=>{
@@ -20,7 +22,7 @@ dietRouter.route('/')
     },(err)=>next(err))
     .catch((err)=>next(err));
 })
-.post(authenticate.verifyUser,authenticate.verifyDietecian, (req, res, next) => {
+.post(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyDietecian, (req, res, next) => {
     diets.create(req.body)
     .then((diet)=>{
         diet.dietician=req.user._id;
@@ -31,11 +33,11 @@ dietRouter.route('/')
     },(err)=>next(err)).catch((err)=>next(err));
     
 })
-.put(authenticate.verifyUser,authenticate.verifyDietecian, (req, res, next) => {
+.put(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyDietecian, (req, res, next) => {
     res.statusCode = 403;
     res.end('PUT operation not supported on /diets');
 })
-.delete(authenticate.verifyUser,authenticate.verifyAdmin,(req, res, next) => {
+.delete(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyAdmin,(req, res, next) => {
     diets.remove({})
     .then((resp)=>{
         res.statusCode=200;
@@ -46,7 +48,9 @@ dietRouter.route('/')
 });
 
 dietRouter.route('/:dietId')
-.get((req,res,next) => {
+.options(cors.corsWithOptions,(req,res)=>{res.sendStatus(200);})
+
+.get(cors.cors,(req,res,next) => {
     diets.findById(req.params.dietId)
     .populate('dietician','_id')
     
@@ -57,11 +61,11 @@ dietRouter.route('/:dietId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.post(authenticate.verifyUser,authenticate.verifyDietecian,(req, res, next) => {
+.post(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyDietecian,(req, res, next) => {
     res.statusCode = 403;
     res.end('POST operation not supported on /dietsId/'+ req.params.dietId);
 })
-.put(authenticate.verifyUser,authenticate.verifyDietecian, (req, res, next) => {
+.put(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyDietecian, (req, res, next) => {
     diets.findByIdAndUpdate(req.params.dietId, {
         $set: req.body
     }, { new: true })
@@ -72,7 +76,7 @@ dietRouter.route('/:dietId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.delete(authenticate.verifyUser,authenticate.verifyAdmin, (req, res, next) => {
+.delete(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyAdmin, (req, res, next) => {
     diets.findByIdAndRemove(req.params.dietId)
     .then((resp) => {
         res.statusCode = 200;

@@ -48,9 +48,6 @@ app.use(passport.session());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
-
-
 app.use('/trainers',trainerRouter);
 app.use('/dietician',dieticianRouter);
 app.use('/workout',workoutRouter);
