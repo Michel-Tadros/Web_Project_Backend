@@ -5,16 +5,25 @@ var passportLocalMongoose = require('passport-local-mongoose');
 var User = new Schema({
     firstname:{
         type:String,
-        default:' '
+        default:'firstname '
     },
     lastname:{
         type:String,
-        default:' '
+        default:'lastname '
     },
     phonenumber:{
         type:Number,
 
+
     },
+    gender:{
+        type:String,
+        default:'M or F',
+        min:'M',
+        max:'F',
+
+    },
+
     email:{
         type:String,
         default:"No email was provided",

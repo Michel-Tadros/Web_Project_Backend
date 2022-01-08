@@ -16,7 +16,7 @@ dieticianRouter.route('/')
     .populate('User_id','_id')
     .then((dieticians)=>{
         res.statusCode=200;
-        res.setHeader("Content-type","application/json");
+        res.setHeader('Content-type','application/json');
         res.json(dieticians);
     },(err)=>next(err))
     .catch((err)=>next(err));
