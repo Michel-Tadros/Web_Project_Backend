@@ -15,7 +15,7 @@ var User = new Schema({
         type: Boolean,
         default: false
     },
-    age:{
+    date_of_birth:{
         type:Date,
         max:Date.now
     },
@@ -27,6 +27,10 @@ var User = new Schema({
         type: Boolean,
         default: false
     },
+    phonenumber:{
+        type:Number,
+
+    }
 });
 
 User.plugin(passportLocalMongoose);

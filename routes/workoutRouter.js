@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const workouts=require('../models/workout');
-const trainer=require('../models/Trainers');
+
 
 const workoutRouter = express.Router();
 
