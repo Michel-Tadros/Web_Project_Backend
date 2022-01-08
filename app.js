@@ -13,9 +13,10 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var trainerRouter= require('./routes/trainerRouter');
 var dieticianRouter= require('./routes/dieticianRouter');
-
-
 var workoutRouter=require('./routes/workoutRouter');
+var dietRouter=require('./routes/dietRouter');
+
+
 const mongoose=require('mongoose');
 const Trainers= require('./models/Trainers');
 const { signedCookies } = require('cookie-parser');
@@ -53,6 +54,7 @@ app.use('/users', usersRouter);
 app.use('/trainers',trainerRouter);
 app.use('/dietician',dieticianRouter);
 app.use('/workout',workoutRouter);
+app.use('/diet',dietRouter);
 
 app.use(express.static(path.join(__dirname, 'public')));
 // catch 404 and forward to error handler

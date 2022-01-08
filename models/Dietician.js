@@ -3,6 +3,10 @@ const Schema = mongoose.Schema;
 require('mongoose-currency').loadType(mongoose);
 const Currency = mongoose.Types.Currency;
 const dieticianSchema = new Schema({
+    User_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User",
+    },
     name:{
         type:String,
         required:true,
