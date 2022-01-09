@@ -1,12 +1,12 @@
 const mongoose = require ("mongoose");
 const Schema = mongoose.Schema;
 require('mongoose-currency').loadType(mongoose);
-const Currency = mongoose.Types.Currency;
-const trainerSchema = new Schema({
+
+const adminSchema = new Schema({
     User_id:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",
-        unique:"true",
+        
     },
     firstname:{
         type:String,
@@ -26,13 +26,11 @@ const trainerSchema = new Schema({
         default:"No email was provided",
         
     },
-    price:{
-        type:Currency,
-        required:true,
-        min:0
+    username:{
+        type:String,
     },
 });
 
 
-var Trainers=mongoose.model('Trainers',trainerSchema,'Trainers');
-module.exports=Trainers;
+var Admins=mongoose.model('Admins',adminSchema,'Admins');
+module.exports=Admins;

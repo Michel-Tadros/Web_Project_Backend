@@ -11,11 +11,6 @@ var User = new Schema({
         type:String,
         default:'lastname '
     },
-    phonenumber:{
-        type:Number,
-
-
-    },
     gender:{
         type:String,
         default:'M or F',
@@ -27,11 +22,15 @@ var User = new Schema({
     email:{
         type:String,
         default:"No email was provided",
-        unique:true,
+        
+    },
+    phonenumber:{
+        type:Number,
+        default:0
     },
     date_of_birth:{
         type:Date,
-        max:Date.now
+        default:Date.now
     },
 
     admin:   {

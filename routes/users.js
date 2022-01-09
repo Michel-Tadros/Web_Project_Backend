@@ -9,7 +9,7 @@ var authenticate = require('../authenticate');
 
 /* GET users listing. */
 router.get('/',cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyAdmin, function(req, res, next) {
-  User.find({})
+  User.find(req.query)
   .then((users)=>{
       res.statusCode=200;
       res.setHeader('Content-Type','application/json');
@@ -75,7 +75,7 @@ router.get('/logout', (req, res) => {
 });
 
 router.route('/:userId')
-.get((req,res,next) => {
+.get(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyAdmin,(req,res,next) => {
     User.findById(req.params.userId)
     .then((user) => {
         res.statusCode = 200;
@@ -88,7 +88,7 @@ router.route('/:userId')
     res.statusCode = 403;
     res.end('POST operation not supported on /users/'+ req.params.userId);
 })
-.put((req, res, next) => {
+.put(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyAdmin,(req, res, next) => {
     User.findByIdAndUpdate(req.params.userId, {
         $set: req.body
     }, { new: true })
@@ -108,6 +108,9 @@ router.route('/:userId')
     }, (err) => next(err))
     .catch((err) => next(err));
 });
+
+
+
 
 
 

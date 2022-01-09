@@ -86,47 +86,5 @@ workoutRouter.route('/:workoutId')
     .catch((err) => next(err));
 });
 
-workoutRouter.route('/:workouttrainer')
-.get((req,res,next) => {
-    workouts.findById(req.params.workoutId)
-    .populate('trainer','_id')
-    .then((workout) => {
-        if (workout != null) {
-            res.statusCode = 200;
-            res.setHeader('Content-Type', 'application/json');
-            res.json(workout.trainer);
-        }
-        else {
-            err = new Error('workout ' + req.params.workoutId + ' not found');
-            err.status = 404;
-            return next(err);
-        }
-    }, (err) => next(err))
-    .catch((err) => next(err));
-})
-.post(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyTrainer,(req, res, next) => {
-    res.statusCode = 403;
-    res.end('POST operation not supported on /workoutsId/'+ req.params.workoutId);
-})
-.put(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyTrainer, (req, res, next) => {
-    workouts.findByIdAndUpdate(req.params.workoutId, {
-        $set: req.body
-    }, { new: true })
-    .then((workout) => {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(workout);
-    }, (err) => next(err))
-    .catch((err) => next(err));
-})
-.delete(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyAdmin, (req, res, next) => {
-    workouts.findByIdAndRemove(req.params.workoutId)
-    .then((resp) => {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(resp);
-    }, (err) => next(err))
-    .catch((err) => next(err));
-});
 
 module.exports = workoutRouter;
