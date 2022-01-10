@@ -18,6 +18,18 @@ var User = new Schema({
         max:'F',
 
     },
+    height:{
+        type:Number,
+        min:0,
+        max:300,
+        default:170
+    },
+
+    weight:{
+        type:Number,
+        min:0,
+        default:65
+    },
 
     email:{
         type:String,

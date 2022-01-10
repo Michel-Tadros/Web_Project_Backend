@@ -9,6 +9,7 @@ const dietSchema = new Schema({
     type:{
         type:String,
         required:true,
+        default:"No type was specified"
     },
     description:{
         type:String,

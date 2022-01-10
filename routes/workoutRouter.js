@@ -87,4 +87,158 @@ workoutRouter.route('/:workoutId')
 });
 
 
+workoutRouter.route('/:trainer')
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .get(cors.cors, (req,res,next) => {
+        workouts.findById(req.user._id)
+            .populate('trainer','_id')
+            .then((workout) => {
+                if (workout != null) {
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json(workout.trainer);
+                }
+                else {
+                    err = new Error('Trainer ' + req.params.workoutId + ' not found');
+                    err.status = 404;
+                    return next(err);
+                }
+            }, (err) => next(err))
+            .catch((err) => next(err));
+    })
+    .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+        workouts.findById(req.params.workoutId)
+            .then((workout) => {
+                if (workout != null) {
+                    req.body.author = req.user._id;
+                    workout.trainer.push(req.body);
+                    workout.save()
+                        .then((workout) => {
+                            workouts.findById(workout._id)
+                                .populate('trainer','_id')
+                                .then((workout) => {
+                                    res.statusCode = 200;
+                                    res.setHeader('Content-Type', 'application/json');
+                                    res.json(workout);
+                                })
+                        }, (err) => next(err));
+                }
+                else {
+                    err = new Error('Trainer ' + req.params.workoutId + ' not found');
+                    err.status = 404;
+                    return next(err);
+                }
+            }, (err) => next(err))
+            .catch((err) => next(err));
+    })
+    .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+        res.statusCode = 403;
+        res.end('PUT operation not supported on /workouts/'
+            + req.params.workoutId + '/trainer');
+    })
+    .delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+        workouts.findById(req.params.workoutId)
+            .then((workout) => {
+                if (workout != null) {
+                    for (var i = (workout.trainer.length -1); i >= 0; i--) {
+                        workout.trainer.id(workout.trainer[i]._id).remove();
+                    }
+                    workout.save()
+                        .then((workout) => {
+                            res.statusCode = 200;
+                            res.setHeader('Content-Type', 'application/json');
+                            res.json(workout);
+                        }, (err) => next(err));
+                }
+                else {
+                    err = new Error('Trainer ' + req.params.workoutId + ' not found');
+                    err.status = 404;
+                    return next(err);
+                }
+            }, (err) => next(err))
+            .catch((err) => next(err));
+    });
+
+
+
+
+
+
+
+workoutRouter.route('/:workoutId/trainer')
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .get(cors.cors, (req,res,next) => {
+        workouts.findById(req.params.workoutId)
+            .populate('trainer','_id')
+            .then((workout) => {
+                if (workout != null) {
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json(workout.trainer);
+                }
+                else {
+                    err = new Error('Trainer ' + req.params.workoutId + ' not found');
+                    err.status = 404;
+                    return next(err);
+                }
+            }, (err) => next(err))
+            .catch((err) => next(err));
+    })
+    .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+        workouts.findById(req.params.workoutId)
+            .then((workout) => {
+                if (workout != null) {
+                    req.body.author = req.user._id;
+                    workout.trainer.push(req.body);
+                    workout.save()
+                        .then((workout) => {
+                            workouts.findById(workout._id)
+                                .populate('trainer','_id')
+                                .then((workout) => {
+                                    res.statusCode = 200;
+                                    res.setHeader('Content-Type', 'application/json');
+                                    res.json(workout);
+                                })
+                        }, (err) => next(err));
+                }
+                else {
+                    err = new Error('Trainer ' + req.params.workoutId + ' not found');
+                    err.status = 404;
+                    return next(err);
+                }
+            }, (err) => next(err))
+            .catch((err) => next(err));
+    })
+    .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+        res.statusCode = 403;
+        res.end('PUT operation not supported on /workouts/'
+            + req.params.workoutId + '/trainer');
+    })
+    .delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+        workouts.findById(req.params.workoutId)
+            .then((workout) => {
+                if (workout != null) {
+                    for (var i = (workout.trainer.length -1); i >= 0; i--) {
+                        workout.trainer.id(workout.trainer[i]._id).remove();
+                    }
+                    workout.save()
+                        .then((workout) => {
+                            res.statusCode = 200;
+                            res.setHeader('Content-Type', 'application/json');
+                            res.json(workout);
+                        }, (err) => next(err));
+                }
+                else {
+                    err = new Error('Trainer ' + req.params.workoutId + ' not found');
+                    err.status = 404;
+                    return next(err);
+                }
+            }, (err) => next(err))
+            .catch((err) => next(err));
+    });
+
+
+
+
+
 module.exports = workoutRouter;
